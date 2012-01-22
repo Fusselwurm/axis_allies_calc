@@ -216,12 +216,6 @@ var
 		//return attackStrength >= Math.ceil(0.5 * 6);
 	},
 
-	// 8 1
-	// 6 2
-	// 14 3
-	// 1 4
-	//
-	// 32 2
 	fightStep = function (attackers, defenders) {
 		var
 			attackerHits = attackers.reduce(function (prev, u) {
@@ -253,10 +247,11 @@ var
 		return e.name;
 	},
 
+
 	dfToUnits = function (e) {
 		var units = [];
 		e.split(',').forEach(function (e) {
-					var name = e.trim().match(/^([0-9]+)?(.+)$/), i;
+					var name = e.trim().match(/^([0-9]+)?\s*(.+)$/), i;
 					if (name) {
 						if (!name[1]) {
 							name[1] = 1;
@@ -318,7 +313,6 @@ window.addEventListener('keyup', function (e) {
 	//console.log(e);
 	if (e.keyCode === 13) {
 		calculate();
-
 	}
 
 });
