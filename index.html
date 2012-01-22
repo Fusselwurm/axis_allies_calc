@@ -15,7 +15,41 @@
 			border: 1px solid gray;
 			padding: 0.2em;
 		}
+
+		.help {
+			font-size: 0.8em;
+		}
+
+		.dfAChelp {
+			z-index: -2;
+		}
+
+		.dfACinput {
+			opacity: 0.5;
+		}
+
+		.lbAttackers {
+			position: absolute;
+		}
+
+		.lbDefenders {
+			position: absolute;
+		}
+
+
+		.dfAttackers, .dfDefenders {
+			position: absolute;
+			left: 5em;
+		}
+
+		.accontainer {
+			position: relative;
+			height: 2em;
+
+		}
+
 	</style>
+	<script type="text/javascript" src="./jquery.js"></script>
 </head>
 <body>
 <ol id="player_order">
@@ -27,15 +61,25 @@
 	<li><span style="background-color: blue; color: white;">France</span></li>
 
 </ol>
-<div>Please enter the units in each army (comma separated unit names. you may prepend a name with a number )</div>
-<div>
-	<label for="dfAttackers">attackers</label>
-	<input type="text" size="80" id="dfAttackers"/>
+<div class="help">Please enter the units in each army (comma separated unit names. you may prepend a name with a number )</div>
+<div class="help">auto completion with Ctrl+Space</div>
+<div class="container">
+	<div class="accontainer">
+		<label for="dfAttackers" class="lbAttackers">attackers</label>
+		<input type="text" size="80" id="dfAttackers" class="dfAttackers dfACinput" />
+		<input type="text" size="80" id="dfAttackersAC" class="dfAttackers dfAChelp" />
+		.
+	</div>
 </div>
 <div>
-	<label for="dfDefenders">defenders</label>
-	<input type="text" size="80" id="dfDefenders"/>
+	<label for="dfDefenders" class="lbDefenders">defenders</label>
+	<div class="accontainer">
+		<input type="text" size="80" id="dfDefenders" class="dfDefenders dfACinput"/>
+		<input type="text" size="80" id="dfDefendersAC" class="dfDefenders dfAChelp" />
+		.
+	</div>
 </div>
+
 <div>
 	<label for="dfNumSim">number of simulations</label>
 	<input type="text" size="5" id="dfNumSim" value="200"/>
@@ -56,6 +100,7 @@
 <script type="text/javascript ">
 	var table = document.getElementById('table'),
 	    n,
+	    unitNames = [],
 	    u,
 	    fn = function (u) {
 		    var unit = u(),
@@ -72,9 +117,64 @@
 
 	for (n in unitFactory) {
 		if (unitFactory.hasOwnProperty(n)) {
+			unitNames.push(n);
 			fn(unitFactory[n]);
 		}
 	}
+
+	// auto completion
+	['dfAttackers', 'dfDefenders'].forEach(function (field) {
+		var acField = $('#' + field + 'AC'),
+		    dField = $('#'+ field);
+
+		acField.attr('disabled', true);
+
+		dField.keyup(function (e) {
+			var ch = String.fromCharCode(e.keyCode),
+			    parts,
+			    fixedWritten,
+			    nameStart,
+			    matches;
+
+			parts = this.value.match(/^(.*[^a-zA-Z_])?([a-zA-Z_]+)$/);
+			if (parts) {
+				nameStart = parts[2];
+				fixedWritten = parts[1] || '';
+				matches = unitNames.filter(function (name) {
+					return name.indexOf(nameStart) === 0;
+				});
+				//console.log(matches);
+				if (matches.length === 1) {
+					acField[0].value = fixedWritten + matches[0];
+					return;
+				}
+			}
+			console.log(this.value);
+			acField[0].value = this.value;
+		}).keyup(function (e) {
+
+			if (e.ctrlKey & e.keyCode === 32) {
+				// auto completion, yay!
+				if (acField[0].value.length > this.value.length) {
+					this.value = acField[0].value;
+				}
+			}
+		}).blur(function () {
+			    acField[0].value = this.value;
+		    });
+	});
+
+
+
+
+	btnFight.addEventListener('click', calculate);
+	window.addEventListener('keyup', function (e) {
+		//console.log(e);
+		if (e.keyCode === 13) {
+			calculate();
+		}
+	});
+
 </script>
 </body>
 </html>

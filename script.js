@@ -305,18 +305,3 @@ var
 		'<br>, avg defender lost IPC: ' + (lostIPCd/numSim);
 
 	};
-
-
-
-btnFight.addEventListener('click', calculate);
-window.addEventListener('keyup', function (e) {
-	//console.log(e);
-	if (e.keyCode === 13) {
-		calculate();
-	}
-
-});
-
-
-
-
