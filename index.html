@@ -1,0 +1,79 @@
+<html>
+<head>
+	<title>Axis & Allies 1940</title>
+	<style type="text/css">
+		#player_order {
+			border: 1px solid black;
+			float: right;
+		}
+
+		#table {
+			border-collapse: collapse;
+		}
+
+		#table td, #table th {
+			border: 1px solid gray;
+			padding: 0.2em;
+		}
+	</style>
+</head>
+<body>
+<ol id="player_order">
+	<li><span style="background-color: black; color: white;">Germany</span></li>
+	<li><span style="background-color: #8b0000; color: white;">Soviet Union</span></li>
+	<li><span style="background-color: #ffebcd; color: black;">Great Britain</span></li>
+	<li><span style="background-color: #a52a2a; color: white;">Italy</span></li>
+	<li><span style="background-color: #6b8e23; color: white;">US of America</span></li>
+	<li><span style="background-color: blue; color: white;">France</span></li>
+
+</ol>
+<div>
+	<label for="dfAttackers">attackers</label>
+	<input type="text" size="80" id="dfAttackers"/>
+</div>
+<div>
+	<label for="dfDefenders">defenders</label>
+	<input type="text" size="80" id="dfDefenders"/>
+</div>
+<div>
+	<label for="dfNumSim">number of simulations</label>
+	<input type="text" size="5" id="dfNumSim" value="200"/>
+</div>
+<button id="btnFight">fight!</button>
+<div id="dfRest"></div>
+<table id="table">
+	<thead><tr>
+		<th>name</th>
+		<th>cost</th>
+		<th>attack</th>
+		<th>defense</th>
+		<th>movement</th>
+	</tr></thead>
+</table>
+
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript ">
+	var table = document.getElementById('table'),
+	    n,
+	    u,
+	    fn = function (u) {
+		    var unit = u(),
+			tr = document.createElement('tr'),
+			h = '';
+
+		    h += '<td>' + unit.name + '</td><td>' + unit.cost + '</td><td>' + unit.attack + '</td><td>' + unit.defense + '</td><td>' + unit.move + '</td>';
+
+		    tr.innerHTML = h;
+
+
+		    table.appendChild(tr);
+	    };
+
+	for (n in unitFactory) {
+		if (unitFactory.hasOwnProperty(n)) {
+			fn(unitFactory[n]);
+		}
+	}
+</script>
+</body>
+</html>
