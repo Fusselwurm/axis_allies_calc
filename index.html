@@ -143,13 +143,11 @@
 				matches = unitNames.filter(function (name) {
 					return name.indexOf(nameStart) === 0;
 				});
-				//console.log(matches);
 				if (matches.length === 1) {
 					acField[0].value = fixedWritten + matches[0];
 					return;
 				}
 			}
-			console.log(this.value);
 			acField[0].value = this.value;
 		}).keyup(function (e) {
 
@@ -169,7 +167,6 @@
 
 	btnFight.addEventListener('click', calculate);
 	window.addEventListener('keyup', function (e) {
-		//console.log(e);
 		if (e.keyCode === 13) {
 			calculate();
 		}

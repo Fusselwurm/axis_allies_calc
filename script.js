@@ -181,7 +181,7 @@ var
 			return {
 				name: "tactical_bomber",
 				name_de: "Stuka",
-				attack: 4,
+				attack: 3,
 				defense: 3,
 				move: 4,
 				cost: 11
