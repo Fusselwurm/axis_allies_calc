@@ -50,6 +50,8 @@
 
 	</style>
 	<script type="text/javascript" src="./jquery.js"></script>
+	<script type="text/javascript" src="./util.js"></script>
+	<script type="text/javascript" src="./lib_aa.js"></script>
 </head>
 <body>
 <ol id="player_order">
@@ -115,10 +117,10 @@
 		    table.appendChild(tr);
 	    };
 
-	for (n in unitFactory) {
-		if (unitFactory.hasOwnProperty(n)) {
+	for (n in LIB_AA.unitFactory) {
+		if (LIB_AA.unitFactory.hasOwnProperty(n)) {
 			unitNames.push(n);
-			fn(unitFactory[n]);
+			fn(LIB_AA.unitFactory[n]);
 		}
 	}
 
