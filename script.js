@@ -13,7 +13,12 @@ var
 	dfDefenders = document.getElementById('dfDefenders'),
 	dfNumSim = document.getElementById('dfNumSim'),
 	btnFight = document.getElementById('btnFight'),
+	/**
+	 * @param units array of units
+	 * @return array containing said units with a few special methods
+	 */
 	newArmy = function (units) {
+			units = units.copy();
 
 			units.getIPC = function () {
 				return units.reduce(function (sum, u) {
@@ -27,16 +32,48 @@ var
 				};
 			}());
 			units.clone = function () {
-				return newArmy(units.copy());
+				return newArmy(units);
+			};
+
+			units.byType = function (name) {
+				return units.filter(function (u) {
+					return u.name === name;
+				});
 			};
 
 			return units;
 	},
-
 	/**
-	 * missing are modificators like
-	 * "combined arms"
-	 * naval base / air base
+	 * map: which unit combined with which other unit gets which attack bonus
+	 */
+	combinedArmsRules = {
+		infantry: {artillery: 1},
+		mech_inf: {artillery: 1},
+		tactical_bomber: { fighter: 1, tank: 1},
+		/**
+		 *
+		 * @param unitName name of the unit
+		 * @param fn callback function that, for each of this unit's combined arms rule,
+		 *                    will be passed two parameters:
+		 *                    the attack bonus and the associated unit's name
+		 */
+		iterate: function (unitName, fn) {
+			var
+				n,
+				ruleSet = combinedArmsRules[unitName];
+
+			if (!ruleSet) {
+				return;
+			}
+			for (n in ruleSet) {
+				if (ruleSet.hasOwnProperty(n)) {
+					fn(ruleSet[n], n);
+				}
+			}
+		}
+	},
+	/**
+	 * missing are special rules for naval battles, amphibious assaults, anti-aircraft guns et al
 	 */
 	unitFactory = {
 		battleship: function () {
@@ -216,16 +253,45 @@ var
 		//return attackStrength >= Math.ceil(0.5 * 6);
 	},
 
+	/**
+	 * one round within a battle:
+	 *
+	 * attackers and defenders each throw their dice for all their units,
+	 * units to be hit are selected & removed
+	 */
 	fightStep = function (attackers, defenders) {
 		var
+			/**
+			 * this array collects those units that
+			 * have already been registered as "used" for a combined arms attack
+			 */
+			usedByCombinedArms = [],
 			attackerHits = attackers.reduce(function (prev, u) {
-				if (attack(u.attack)) {
+				var attackStrength = u.attack;
+
+				// apply modifiers to units attack strength:
+				combinedArmsRules.iterate(u.name, function (attackBonus, unitName) {
+					attackers.some(function (otherUnit) {
+						if ((otherUnit.name === unitName) && (usedByCombinedArms.indexOf(otherUnit) === -1)) {
+							usedByCombinedArms.push(otherUnit);
+							attackStrength += attackBonus;
+						}
+					});
+				});
+				// console.log('attacker: ' + u.name + ': ' + attackStrength);
+				if (attack(attackStrength)) {
 					prev += 1;
 				}
 				return prev;
 			}, 0),
+
 			defenderHits = defenders.reduce(function (prev, u) {
-				if (attack(u.defense)) {
+				var attackStrength = u.defense;
+
+				// apply modifiers to units attack strength... no.
+				// combined forces modifiers only apply to attacking units
+				// console.log('defender: ' + u.name + ': ' + attackStrength);
+				if (attack(attackStrength)) {
 					prev += 1;
 				}
 				return prev;
@@ -239,15 +305,24 @@ var
 	fight = function (attackers, defenders) {
 		while (attackers.length && defenders.length) {
 			fightStep(attackers, defenders);
-			//console.log(attackers.length, defenders.length);
 		}
+//		console.log(
+//			(attackers.map(function (u) {
+//			return u.name;
+//		}).join(', ') || ' -- ') + '; ' +
+//			(defenders.map(function (u) {
+//			return u.name;
+//		}).join(', ') || ' -- '));
 	},
 
-	unitGroupGetNames = function (e) {
-		return e.name;
-	},
+//	unitGroupGetNames = function (e) {
+//		return e.name;
+//	},
 
 
+	/**
+	 * return array of units
+	 */
 	dfToUnits = function (e) {
 		var units = [];
 		e.split(',').forEach(function (e) {
