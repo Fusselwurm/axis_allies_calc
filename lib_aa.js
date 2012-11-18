@@ -75,8 +75,19 @@ LIB_AA = (function () {
 					attack: 4,
 					defense: 4,
 					move: 2,
-					cost: 20
-
+					cost: 20,
+					hp: 2
+				};
+			},
+			carrier: function () {
+				return {
+					name: "carrier",
+					name_de: "Träger",
+					attack: 0,
+					defense: 2,
+					move: 2,
+					cost: 16,
+					hp: 2
 				};
 			},
 			cruiser: function () {
