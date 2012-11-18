@@ -68,7 +68,7 @@
 
 </ol>
 <div class="help">Please enter the units in each army (comma separated unit names. you may prepend a name with a number )</div>
-<div class="help">auto completion with Ctrl+Space</div>
+<div class="help">auto completion with Ctrl+Space, Tab or End</div>
 <div class="container">
 	<div class="accontainer">
 		<label for="dfAttackers" class="lbAttackers">attackers</label>
@@ -162,15 +162,22 @@
 			acField[0].value = this.value;
 		}).keyup(function (e) {
 
-			if (e.ctrlKey & e.keyCode === 32) {
+			if ((e.ctrlKey & e.keyCode === 32) || e.keyCode === 35) {
 				// auto completion, yay!
 				if (acField[0].value.length > this.value.length) {
 					this.value = acField[0].value;
 				}
 			}
+        }).keydown(function (e) {
+            if (e.keyCode === 9) {
+                if (acField[0].value.length > this.value.length) {
+                    this.value = acField[0].value;
+                    e.preventDefault();
+                }
+            }
 		}).blur(function () {
 			    acField[0].value = this.value;
-		    });
+        });
 	});
 
 
