@@ -32,6 +32,9 @@ LIB_AA = (function () {
 
 				return units;
 		},
+		map = {
+
+		},
 		/**
 		 * map: which unit combined with which other unit gets which attack bonus
 		 */
@@ -131,7 +134,7 @@ LIB_AA = (function () {
 					name: "mech_inf",
 					name_de: "Panzergrenadiere",
 					attack: 1,
-					defense: 1,
+					defense: 2,
 					move: 2,
 					cost: 4
 				};
