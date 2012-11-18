@@ -48,6 +48,10 @@
 
 		}
 
+        .error {
+            background-color: #f00;
+        }
+
 	</style>
 	<script type="text/javascript" src="./jquery.js"></script>
 	<script type="text/javascript" src="./util.js"></script>
@@ -145,11 +149,16 @@
 				matches = unitNames.filter(function (name) {
 					return name.indexOf(nameStart) === 0;
 				});
+                acField.removeClass('error');
 				if (matches.length === 1) {
 					acField[0].value = fixedWritten + matches[0];
 					return;
-				}
-			}
+				} else if (matches.length === 0) {
+                    acField.addClass('error');
+                }
+			} else {
+                acField.removeClass('error');
+            }
 			acField[0].value = this.value;
 		}).keyup(function (e) {
 
