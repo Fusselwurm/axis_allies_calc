@@ -36,7 +36,6 @@
 			position: absolute;
 		}
 
-
 		.dfAttackers, .dfDefenders {
 			position: absolute;
 			left: 5em;
@@ -48,13 +47,13 @@
 
 		}
 
-        .error {
-            background-color: #f00;
-        }
+		.error {
+			background-color: #f00;
+		}
 
-        #dFirstIteration, #dRest {
-            float: left;
-        }
+		#dFirstIteration, #dRest {
+			float: left;
+		}
 
 	</style>
 	<script type="text/javascript" src="./jquery.js"></script>
@@ -71,21 +70,24 @@
 	<li><span style="background-color: blue; color: white;">France</span></li>
 
 </ol>
-<div class="help">Please enter the units in each army (comma separated unit names. you may prepend a name with a number )</div>
+<div class="help">Please enter the units in each army (comma separated unit names. you may prepend a name with a number
+	)
+</div>
 <div class="help">auto completion with Ctrl+Space, Tab or End</div>
 <div class="container">
 	<div class="accontainer">
 		<label for="dfAttackers" class="lbAttackers">attackers</label>
-		<input type="text" size="80" id="dfAttackers" class="dfAttackers dfACinput" />
-		<input type="text" size="80" id="dfAttackersAC" class="dfAttackers dfAChelp" />
+		<input type="text" size="80" id="dfAttackers" class="dfAttackers dfACinput"/>
+		<input type="text" size="80" id="dfAttackersAC" class="dfAttackers dfAChelp"/>
 		.
 	</div>
 </div>
 <div>
 	<label for="dfDefenders" class="lbDefenders">defenders</label>
+
 	<div class="accontainer">
 		<input type="text" size="80" id="dfDefenders" class="dfDefenders dfACinput"/>
-		<input type="text" size="80" id="dfDefendersAC" class="dfDefenders dfAChelp" />
+		<input type="text" size="80" id="dfDefendersAC" class="dfDefenders dfAChelp"/>
 		.
 	</div>
 </div>
@@ -97,48 +99,52 @@
 <button id="btnFight">fight!</button>
 <div>&nbsp;</div>
 <div id="dRest"></div>
-<div id="dFirstIteration"><ul></ul></div>
+<div id="dFirstIteration">
+	<ul></ul>
+</div>
 <div style="clear: both"></div>
 <table id="table">
-	<thead><tr>
+	<thead>
+	<tr>
 		<th>name</th>
 		<th>cost</th>
 		<th>attack</th>
 		<th>defense</th>
 		<th>movement</th>
-        <th>hitpoints</th>
-	</tr></thead>
+		<th>hitpoints</th>
+	</tr>
+	</thead>
 </table>
 
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript ">
 	var table = document.getElementById('table'),
-	    n,
-	    unitNames = [],
-	    u,
-	    fn = function (u) {
-		    var
-                    unit = u(),
-                    tmp,
-			    tr = document.createElement('tr'),
-			    h = '';
+		n,
+		unitNames = [],
+		u,
+		fn = function (u) {
+			var
+				unit = u(),
+				tmp,
+				tr = document.createElement('tr'),
+				h = '';
 
-            tmp = [
-                    unit.name,
-                    unit.cost,
-                    unit.attack,
-                    unit.defense,
-                    unit.move,
-                    unit.hp
-            ];
+			tmp = [
+				unit.name,
+				unit.cost,
+				unit.attack,
+				unit.defense,
+				unit.move,
+				unit.hp
+			];
 
-		    h += '<td>' + tmp.join('</td><td>') + '</td>';
+			h += '<td>' + tmp.join('</td><td>') + '</td>';
 
-		    tr.innerHTML = h;
+			tr.innerHTML = h;
 
 
-		    table.appendChild(tr);
-	    };
+			table.appendChild(tr);
+		};
 
 	for (n in LIB_AA.unitFactory) {
 		if (LIB_AA.unitFactory.hasOwnProperty(n)) {
@@ -150,16 +156,16 @@
 	// auto completion
 	['dfAttackers', 'dfDefenders'].forEach(function (field) {
 		var acField = $('#' + field + 'AC'),
-		    dField = $('#'+ field);
+			dField = $('#' + field);
 
 		acField.attr('disabled', true);
 
 		dField.keyup(function (e) {
 			var ch = String.fromCharCode(e.keyCode),
-			    parts,
-			    fixedWritten,
-			    nameStart,
-			    matches;
+				parts,
+				fixedWritten,
+				nameStart,
+				matches;
 
 			parts = this.value.match(/^(.*[^a-zA-Z_])?([a-zA-Z_]+)$/);
 			if (parts) {
@@ -168,38 +174,36 @@
 				matches = unitNames.filter(function (name) {
 					return name.indexOf(nameStart) === 0;
 				});
-                acField.removeClass('error');
+				acField.removeClass('error');
 				if (matches.length === 1) {
 					acField[0].value = fixedWritten + matches[0];
 					return;
 				} else if (matches.length === 0) {
-                    acField.addClass('error');
-                }
+					acField.addClass('error');
+				}
 			} else {
-                acField.removeClass('error');
-            }
+				acField.removeClass('error');
+			}
 			acField[0].value = this.value;
 		}).keyup(function (e) {
 
-			if ((e.ctrlKey & e.keyCode === 32) || e.keyCode === 35) {
-				// auto completion, yay!
-				if (acField[0].value.length > this.value.length) {
-					this.value = acField[0].value;
+				if ((e.ctrlKey & e.keyCode === 32) || e.keyCode === 35) {
+					// auto completion, yay!
+					if (acField[0].value.length > this.value.length) {
+						this.value = acField[0].value;
+					}
 				}
-			}
-        }).keydown(function (e) {
-            if (e.keyCode === 9) {
-                if (acField[0].value.length > this.value.length) {
-                    this.value = acField[0].value;
-                    e.preventDefault();
-                }
-            }
-		}).blur(function () {
-			    acField[0].value = this.value;
-        });
+			}).keydown(function (e) {
+				if (e.keyCode === 9) {
+					if (acField[0].value.length > this.value.length) {
+						this.value = acField[0].value;
+						e.preventDefault();
+					}
+				}
+			}).blur(function () {
+				acField[0].value = this.value;
+			});
 	});
-
-
 
 
 	btnFight.addEventListener('click', calculate);
