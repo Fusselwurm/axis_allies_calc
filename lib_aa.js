@@ -32,9 +32,11 @@ LIB_AA = (function () {
 
 				return units;
 		},
-		map = {
-
-		},
+	// add map: about a hundred different areas, each characterized by its connections to other areas
+	// (which in nature may be: "normal" adjacent land areas, "normal" adjacent sea areas, adjacent sea areas to/from which air defence may be scrambled)
+		//map = {
+		//
+		//},
 		/**
 		 * map: which unit combined with which other unit gets which attack bonus
 		 */
@@ -97,7 +99,8 @@ LIB_AA = (function () {
 					attack: 3,
 					defense: 3,
 					move: 2,
-					cost: 12
+					cost: 12,
+					hp: 1
 				};
 			},
 			destroyer: function () {
@@ -107,7 +110,8 @@ LIB_AA = (function () {
 					attack: 2,
 					defense: 2,
 					move: 2,
-					cost: 8
+					cost: 8,
+					hp: 1
 				};
 			},
 			submarine: function () {
@@ -117,7 +121,8 @@ LIB_AA = (function () {
 					attack: 2,
 					defense: 1,
 					move: 2,
-					cost: 6
+					cost: 6,
+					hp: 1
 				};
 			},
 			transport: function () {
@@ -127,7 +132,8 @@ LIB_AA = (function () {
 					attack: 0,
 					defense: 0,
 					move: 2,
-					cost: 7
+					cost: 7,
+					hp: 1
 				};
 			},
 			tank: function () {
@@ -137,7 +143,8 @@ LIB_AA = (function () {
 					attack: 3,
 					defense: 3,
 					move: 2,
-					cost: 6
+					cost: 6,
+					hp: 1
 				};
 			},
 			mech_inf: function () {
@@ -147,7 +154,8 @@ LIB_AA = (function () {
 					attack: 1,
 					defense: 2,
 					move: 2,
-					cost: 4
+					cost: 4,
+					hp: 1
 				};
 			},
 			artillery: function () {
@@ -157,7 +165,8 @@ LIB_AA = (function () {
 					attack: 2,
 					defense: 2,
 					move: 1,
-					cost: 4
+					cost: 4,
+					hp: 1
 				};
 			},
 			infantry: function () {
@@ -167,7 +176,8 @@ LIB_AA = (function () {
 					attack: 1,
 					defense: 2,
 					move: 1,
-					cost: 3
+					cost: 3,
+					hp: 1
 				};
 			},
 			bomber: function () {
@@ -177,7 +187,8 @@ LIB_AA = (function () {
 					attack: 4,
 					defense: 1,
 					move: 6,
-					cost: 12
+					cost: 12,
+					hp: 1
 				};
 			},
 			tactical_bomber: function () {
@@ -187,7 +198,8 @@ LIB_AA = (function () {
 					attack: 3,
 					defense: 3,
 					move: 4,
-					cost: 11
+					cost: 11,
+					hp: 1
 				};
 			},
 			fighter: function () {
@@ -197,7 +209,8 @@ LIB_AA = (function () {
 					attack: 3,
 					defense: 4,
 					move: 4,
-					cost: 10
+					cost: 10,
+					hp: 1
 				};
 			},
 			industry_major: function () {
@@ -255,7 +268,15 @@ LIB_AA = (function () {
 			return attackStrength >= Math.ceil(Math.random() * 6);
 			//return attackStrength >= Math.ceil(0.5 * 6);
 		},
-
+		/**
+		 *
+		 * @param army Array
+		 * @param inflictedDamage int
+		 *
+		 */
+		killUnits = function (army, inflictedDamage) {
+			army.splice(0, inflictedDamage);
+		},
 		/**
 		 * one round within a battle:
 		 *
@@ -300,11 +321,17 @@ LIB_AA = (function () {
 					return prev;
 				}, 0);
 
-			attackers.splice(0, defenderHits);
-			defenders.splice(0, attackerHits);
+			// remove a number of attackers equal to number of hits scored by defenders
+			// except when there's units with 2 hit points - those should be reduced to 1hp before the first unit dies.
+			/**
+			 * some possible stragies:
+			 * a) do the same as before - kill units in order of their appearance in the array, only count 2hp-beasts twice
+			 * b) look for 2hp-beasts, reduce to 1hp, then take them out as before.
+			 */
+			killUnits(attackers, defenderHits);
+			killUnits(defenders, attackerHits);
+
 		},
-
-
 		fight = function (attackers, defenders) {
 			while (attackers.length && defenders.length) {
 				fightStep(attackers, defenders);
