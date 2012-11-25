@@ -270,12 +270,29 @@ LIB_AA = (function () {
 		},
 		/**
 		 *
+		 * weaken units with more than 1 hp first.
+		 *
 		 * @param army Array
 		 * @param inflictedDamage int
 		 *
 		 */
 		killUnits = function (army, inflictedDamage) {
-			army.splice(0, inflictedDamage);
+			var
+				multipleHitpointUnits = army.filter(function (unit) {
+					return unit.hp > 1;
+				}),
+				unit;
+
+			while (inflictedDamage && multipleHitpointUnits.length) {
+				unit = multipleHitpointUnits.shift();
+				unit.hp -= 1;
+				inflictedDamage -= 1;
+			}
+			if (inflictedDamage) {
+
+				army.splice(0, inflictedDamage);
+			}
+
 		},
 		/**
 		 * one round within a battle:
@@ -330,6 +347,7 @@ LIB_AA = (function () {
 			 */
 			killUnits(attackers, defenderHits);
 			killUnits(defenders, attackerHits);
+			events.fire('afterFight', [attackers, defenders]);
 
 		},
 		fight = function (attackers, defenders) {
@@ -343,17 +361,37 @@ LIB_AA = (function () {
 	//			(defenders.map(function (u) {
 	//			return u.name;
 	//		}).join(', ') || ' -- '));
+		},
+		listeners = {
+		},
+		events = {
+			fire: function (name, args) {
+				if (listeners[name]) {
+					listeners[name].forEach(function (fn) {
+						fn.apply(null, args);
+					});
+				}
+			},
+			add: function (name, fn) {
+				if (!listeners[name]) {
+					listeners[name] = [];
+				}
+				listeners[name].push(fn);
+			},
+			remove: function (name, fn) {
+				listeners[name] = listeners[name].filter(function (storedFn) {
+					return storedFn !== fn;
+				});
+			}
 		};
-
-
-
-
-
-
 
 	return {
 		unitFactory: unitFactory,
 		fight: fight,
-		newArmy: newArmy
+		newArmy: newArmy,
+		events: {
+			add: events.add,
+			remove: events.remove
+		}
 	};
 }());

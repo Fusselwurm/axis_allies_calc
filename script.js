@@ -1,6 +1,7 @@
 
 var
-	dfRest = document.getElementById('dfRest'),
+	dRest = document.getElementById('dRest'),
+	dFirstIteration = document.getElementById('dFirstIteration'),
 	dfAttackers = document.getElementById('dfAttackers'),
 	dfDefenders = document.getElementById('dfDefenders'),
 	dfNumSim = document.getElementById('dfNumSim'),
@@ -31,6 +32,15 @@ var
 	calculate = function () {
 		var attackers = LIB_AA.newArmy(dfToUnits(dfAttackers.value)),
 			defenders = LIB_AA.newArmy(dfToUnits(dfDefenders.value)),
+			ul = dFirstIteration.getElementsByTagName('ul')[0],
+			logFirstFight = function (attackers, defenders) {
+				var
+					returnName = function (a) {
+						return a.name;
+					};
+
+				ul.innerHTML += '<li>' + attackers.map(returnName).join(',') + ' vs ' + defenders.map(returnName).join(',') + '</li>';
+			},
 			numSim = dfNumSim.value,
 			i,
 			win = 0,
@@ -42,10 +52,18 @@ var
 			a,
 			d;
 
+		ul.innerHTML = '';
+
 		for (i = 0; i < numSim; i += 1) {
 			a = attackers.clone();
 			d = defenders.clone();
+			if (i === 1) {
+				LIB_AA.events.add('afterFight', logFirstFight);
+			}
 			LIB_AA.fight(a, d);
+			if (i === 1) {
+				LIB_AA.events.remove('afterFight', logFirstFight);
+			}
 			tmp = (a.length - d.length);
 			if (!tmp) {
 				draw += 1;
@@ -63,7 +81,7 @@ var
 		}
 
 		//dfRest.innerText = JSON.stringify(attackers.map(unitGroupGetNames)) + '\n' + JSON.stringify(defenders.map(unitGroupGetNames));
-		dfRest.innerHTML = 'win: ' + (win/numSim) +
+		dRest.innerHTML = 'win: ' + (win/numSim) +
 			',<br/> draw: ' + (draw/numSim) +
 			',<br/> lose: ' + (lose/numSim) +
 		'<br>, avg attacker lost IPC: ' + (lostIPCa/numSim) +

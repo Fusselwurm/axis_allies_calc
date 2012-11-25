@@ -52,6 +52,10 @@
             background-color: #f00;
         }
 
+        #dFirstIteration, #dRest {
+            float: left;
+        }
+
 	</style>
 	<script type="text/javascript" src="./jquery.js"></script>
 	<script type="text/javascript" src="./util.js"></script>
@@ -91,7 +95,10 @@
 	<input type="text" size="5" id="dfNumSim" value="200"/>
 </div>
 <button id="btnFight">fight!</button>
-<div id="dfRest"></div>
+<div>&nbsp;</div>
+<div id="dRest"></div>
+<div id="dFirstIteration"><ul></ul></div>
+<div style="clear: both"></div>
 <table id="table">
 	<thead><tr>
 		<th>name</th>
