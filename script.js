@@ -36,7 +36,11 @@ var
 			logFirstFight = function (attackers, defenders) {
 				var
 					returnName = function (a) {
-						return a.name;
+						var result = a.name;
+						if (a.hp > 1) {
+							result = '<span style="text-decoration: underline">' + result + '</span>'
+						}
+						return result;
 					};
 
 				ul.innerHTML += '<li>' + attackers.map(returnName).join(',') + ' vs ' + defenders.map(returnName).join(',') + '</li>';
@@ -53,17 +57,13 @@ var
 			d;
 
 		ul.innerHTML = '';
-
+		LIB_AA.events.add('afterFight', logFirstFight);
 		for (i = 0; i < numSim; i += 1) {
 			a = attackers.clone();
 			d = defenders.clone();
-			if (i === 1) {
-				LIB_AA.events.add('afterFight', logFirstFight);
-			}
 			LIB_AA.fight(a, d);
-			if (i === 1) {
-				LIB_AA.events.remove('afterFight', logFirstFight);
-			}
+			LIB_AA.events.remove('afterFight', logFirstFight);
+
 			tmp = (a.length - d.length);
 			if (!tmp) {
 				draw += 1;
