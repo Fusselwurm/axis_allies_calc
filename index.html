@@ -106,6 +106,7 @@
 		<th>attack</th>
 		<th>defense</th>
 		<th>movement</th>
+        <th>hitpoints</th>
 	</tr></thead>
 </table>
 
@@ -116,11 +117,22 @@
 	    unitNames = [],
 	    u,
 	    fn = function (u) {
-		    var unit = u(),
-			tr = document.createElement('tr'),
-			h = '';
+		    var
+                    unit = u(),
+                    tmp,
+			    tr = document.createElement('tr'),
+			    h = '';
 
-		    h += '<td>' + unit.name + '</td><td>' + unit.cost + '</td><td>' + unit.attack + '</td><td>' + unit.defense + '</td><td>' + unit.move + '</td>';
+            tmp = [
+                    unit.name,
+                    unit.cost,
+                    unit.attack,
+                    unit.defense,
+                    unit.move,
+                    unit.hp
+            ];
+
+		    h += '<td>' + tmp.join('</td><td>') + '</td>';
 
 		    tr.innerHTML = h;
 
