@@ -55,6 +55,18 @@
 			float: left;
 		}
 
+		tr.land {
+			background-color: #9fdb8d;
+		}
+
+		tr.sea {
+			background-color: #d3fdff;
+		}
+
+		tr.air {
+			background-color: #eee;
+		}
+
 	</style>
 	<script type="text/javascript" src="./jquery.js"></script>
 	<script type="text/javascript" src="./util.js"></script>
@@ -112,6 +124,7 @@
 		<th>defense</th>
 		<th>movement</th>
 		<th>hitpoints</th>
+		<th>attacks</th>
 	</tr>
 	</thead>
 </table>
@@ -141,6 +154,7 @@
 			h += '<td>' + tmp.join('</td><td>') + '</td>';
 
 			tr.innerHTML = h;
+			tr.className = unit.domain;
 
 
 			table.appendChild(tr);

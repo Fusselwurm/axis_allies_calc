@@ -78,7 +78,9 @@ LIB_AA = (function () {
 					defense: 4,
 					move: 2,
 					cost: 20,
-					hp: 2
+					hp: 2,
+					domain: 'sea',
+					attack_domains: ['air', 'land', 'sea']
 				};
 			},
 			carrier: function () {
@@ -89,7 +91,9 @@ LIB_AA = (function () {
 					defense: 2,
 					move: 2,
 					cost: 16,
-					hp: 2
+					hp: 2,
+					domain: 'sea',
+					attack_domains: ['air', 'sea']
 				};
 			},
 			cruiser: function () {
@@ -100,7 +104,9 @@ LIB_AA = (function () {
 					defense: 3,
 					move: 2,
 					cost: 12,
-					hp: 1
+					hp: 1,
+					domain: 'sea',
+					attack_domains: ['air', 'land', 'sea']
 				};
 			},
 			destroyer: function () {
@@ -111,7 +117,9 @@ LIB_AA = (function () {
 					defense: 2,
 					move: 2,
 					cost: 8,
-					hp: 1
+					hp: 1,
+					domain: 'sea',
+					attack_domains: ['air', 'sea']
 				};
 			},
 			submarine: function () {
@@ -122,7 +130,9 @@ LIB_AA = (function () {
 					defense: 1,
 					move: 2,
 					cost: 6,
-					hp: 1
+					hp: 1,
+					domain: 'sea',
+					attack_domains: ['sea']
 				};
 			},
 			transport: function () {
@@ -133,7 +143,8 @@ LIB_AA = (function () {
 					defense: 0,
 					move: 2,
 					cost: 7,
-					hp: 1
+					hp: 1,
+					domain: 'sea'
 				};
 			},
 			tank: function () {
@@ -144,7 +155,9 @@ LIB_AA = (function () {
 					defense: 3,
 					move: 2,
 					cost: 6,
-					hp: 1
+					hp: 1,
+					domain: 'land',
+					attack_domains: ['air', 'land']
 				};
 			},
 			mech_inf: function () {
@@ -155,7 +168,9 @@ LIB_AA = (function () {
 					defense: 2,
 					move: 2,
 					cost: 4,
-					hp: 1
+					hp: 1,
+					domain: 'land',
+					attack_domains: ['air', 'land']
 				};
 			},
 			artillery: function () {
@@ -166,7 +181,9 @@ LIB_AA = (function () {
 					defense: 2,
 					move: 1,
 					cost: 4,
-					hp: 1
+					hp: 1,
+					domain: 'land',
+					attack_domains: ['air', 'land']
 				};
 			},
 			infantry: function () {
@@ -177,7 +194,9 @@ LIB_AA = (function () {
 					defense: 2,
 					move: 1,
 					cost: 3,
-					hp: 1
+					hp: 1,
+					domain: 'land',
+					attack_domains: ['air', 'land']
 				};
 			},
 			bomber: function () {
@@ -188,7 +207,9 @@ LIB_AA = (function () {
 					defense: 1,
 					move: 6,
 					cost: 12,
-					hp: 1
+					hp: 1,
+					domain: 'air',
+					attack_domains: ['air', 'land', 'sea']
 				};
 			},
 			tactical_bomber: function () {
@@ -199,7 +220,9 @@ LIB_AA = (function () {
 					defense: 3,
 					move: 4,
 					cost: 11,
-					hp: 1
+					hp: 1,
+					domain: 'air',
+					attack_domains: ['air', 'land', 'sea']
 				};
 			},
 			fighter: function () {
@@ -210,7 +233,9 @@ LIB_AA = (function () {
 					defense: 4,
 					move: 4,
 					cost: 10,
-					hp: 1
+					hp: 1,
+					domain: 'air',
+					attack_domains: ['air', 'land', 'sea']
 				};
 			},
 			industry_major: function () {
@@ -220,7 +245,8 @@ LIB_AA = (function () {
 					attack: 0, // 1 against bombing raids
 					defense: 0,
 					move: 0,
-					cost: 30
+					cost: 30,
+					domain: 'land'
 				}
 			},
 			industry_minor: function () {
@@ -230,7 +256,8 @@ LIB_AA = (function () {
 					attack: 0,
 					defense: 0,
 					move: 0,
-					cost: 15
+					cost: 15,
+					domain: 'land'
 				};
 			},
 			naval_base: function () {
@@ -240,7 +267,8 @@ LIB_AA = (function () {
 					cost: 15,
 					attack: 0,
 					defense: 0,
-					move: 0
+					move: 0,
+					domain: 'land'
 				};
 			},
 			air_base: function () {
@@ -250,7 +278,8 @@ LIB_AA = (function () {
 					cost: 15,
 					attack: 0,
 					defense: 0,
-					move: 0
+					move: 0,
+					domain: 'land'
 				};
 			},
 			anti_aircraft: function () {
@@ -260,7 +289,9 @@ LIB_AA = (function () {
 					cost: 6,
 					attack: 0,
 					defense: 0,
-					move: 1
+					move: 1,
+					domain: 'land',
+					attack_domains: ['air']
 				};
 			}
 		},
